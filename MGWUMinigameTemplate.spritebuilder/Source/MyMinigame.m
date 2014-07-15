@@ -7,12 +7,21 @@
 
 #import "MyMinigame.h"
 
-@implementation MyMinigame
+@implementation MyMinigame {
+    BOOL _isTouching;
+    CGPoint _initialTouch;
+    CGPoint _currentTouch;
+}
 
 -(id)init {
     if ((self = [super init])) {
         // Initialize any arrays, dictionaries, etc in here
         self.instructions = @"These are the game instructions :D";
+        self.userInteractionEnabled = TRUE;
+        
+        _isTouching = FALSE;
+        
+        self.hero.physicsBody.collisionType = @"Player";
     }
     return self;
 }
@@ -29,10 +38,37 @@
     // Create anything you'd like to draw here
 }
 
+-(void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event
+{
+    CCLOG(@"Touch Began");
+    _isTouching = YES;
+    _initialTouch = touch.locationInWorld;
+}
+
+-(void)touchEnded:(UITouch *)touch withEvent:(UIEvent *)event
+{
+    CCLOG(@"Touch Ended");
+    _isTouching = NO;
+}
+
+-(void)touchMoved:(UITouch *)touch withEvent:(UIEvent *)event
+{
+    _currentTouch = touch.locationInWorld;
+    if (_currentTouch.x < _initialTouch.x) {
+        [self.hero moveLeft];
+    } else if (_currentTouch.x > _initialTouch.x) {
+        [self.hero moveRight];
+    }
+}
+
 -(void)update:(CCTime)delta {
     // Called each update cycle
     // n.b. Lag and other factors may cause it to be called more or less frequently on different devices or sessions
     // delta will tell you how much time has passed since the last cycle (in seconds)
+}
+
+-(void)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair*)pair player:(CCNode*)player coin:(CCNode*)coin {
+    CCLOG(@"Hit a coin");
 }
 
 -(void)endMinigame {

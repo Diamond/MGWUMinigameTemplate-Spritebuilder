@@ -15,13 +15,17 @@
     BOOL _isLanding;
 }
 
+static const CGFloat X_SPEED = 30.0f;
+
 -(id)init {
     if ((self = [super init])) {
         // Initialize any arrays, dictionaries, etc in here
         
         // We initialize _isIdling to be YES, because we want the character to start idling
         // (Our animation code relies on this)
-        _isIdling = YES;
+        _isIdling      = YES;
+        self.isIdle    = YES;
+        self.isJumping = NO;
         // by default, a BOOL's value is NO, so the other BOOLs are NO right now
     }
     return self;
@@ -43,6 +47,15 @@
     
     // This sample method is called every update to handle character animation
     [self updateAnimations:delta];
+    
+    if (_isIdling) {
+        [self jump];
+        if (self.rotation < -15) {
+            self.rotation = -15;
+        } else if (self.rotation > 15) {
+            self.rotation = 15;
+        }
+    }
 }
 
 -(void)updateAnimations:(CCTime)delta {
@@ -52,6 +65,7 @@
     if (_velYPrev == 0 && self.physicsBody.velocity.y == 0 && !_isIdling && !_isFalling) {
         [self resetBools];
         _isIdling = YES;
+        self.rotation = 0.0f;
         [self.animationManager runAnimationsForSequenceNamed:@"AnimIsoIdling"];
     }
     // JUMP
@@ -76,6 +90,7 @@
     else if (_velYPrev < 0 && self.physicsBody.velocity.y >= 0 && _isFalling && !_isLanding) {
         [self resetBools];
         _isLanding = YES;
+        self.rotation = 0.0f;
         [self.animationManager runAnimationsForSequenceNamed:@"AnimIsoLand"];
     }
     
@@ -96,6 +111,20 @@
 // It's been added to a physics node in the main scene, like the penguins Peeved Penguins, so it will fall automatically!
 -(void)jump {
     self.physicsBody.velocity = ccp(0,122);
+}
+
+-(void)moveLeft {
+    CGFloat xvel = -(X_SPEED);
+    CGFloat yvel = self.physicsBody.velocity.y;
+    
+    self.physicsBody.velocity = ccp(xvel, yvel);
+}
+
+-(void)moveRight {
+    CGFloat xvel = +(X_SPEED);
+    CGFloat yvel = self.physicsBody.velocity.y;
+    
+    self.physicsBody.velocity = ccp(xvel, yvel);
 }
 
 @end

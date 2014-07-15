@@ -9,6 +9,11 @@
 
 @interface MyCharacter : MGWUCharacter
 
+@property (nonatomic,assign) BOOL isJumping;
+@property (nonatomic,assign) BOOL isIdle;
+
 -(void)jump;
+-(void)moveLeft;
+-(void)moveRight;
 
 @end
