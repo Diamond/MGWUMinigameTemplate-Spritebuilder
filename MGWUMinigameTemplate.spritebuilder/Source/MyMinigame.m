@@ -6,11 +6,15 @@
 //
 
 #import "MyMinigame.h"
+#import "BricheyCoin.h"
 
 @implementation MyMinigame {
     BOOL _isTouching;
     CGPoint _initialTouch;
     CGPoint _currentTouch;
+    
+    BricheyCoin *_coin;
+    CCPhysicsNode *_physicsNode;
 }
 
 -(id)init {
@@ -21,13 +25,16 @@
         
         _isTouching = FALSE;
         
-        self.hero.physicsBody.collisionType = @"Player";
     }
     return self;
 }
 
 -(void)didLoadFromCCB {
     // Set up anything connected to Sprite Builder here
+    _physicsNode.collisionDelegate = self;
+    
+    self.hero.physicsBody.collisionType = @"player";
+    _coin.physicsBody.collisionType     = @"coin";
     
     // We're calling a public method of the character that tells it to jump!
     [self.hero jump];
@@ -40,14 +47,12 @@
 
 -(void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    CCLOG(@"Touch Began");
     _isTouching = YES;
     _initialTouch = touch.locationInWorld;
 }
 
 -(void)touchEnded:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    CCLOG(@"Touch Ended");
     _isTouching = NO;
 }
 
@@ -67,8 +72,9 @@
     // delta will tell you how much time has passed since the last cycle (in seconds)
 }
 
--(void)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair*)pair player:(CCNode*)player coin:(CCNode*)coin {
+-(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair player:(MyCharacter*)player coin:(BricheyCoin*)coin {
     CCLOG(@"Hit a coin");
+    return NO;
 }
 
 -(void)endMinigame {
