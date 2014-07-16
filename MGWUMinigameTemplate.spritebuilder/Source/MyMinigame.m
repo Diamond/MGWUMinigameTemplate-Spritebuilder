@@ -7,6 +7,7 @@
 
 #import "MyMinigame.h"
 #import "BricheyCoin.h"
+#import "CCPhysics+ObjectiveChipmunk.h"
 
 @implementation MyMinigame {
     BOOL _isTouching;
@@ -15,6 +16,8 @@
     
     BricheyCoin *_coin;
     CCPhysicsNode *_physicsNode;
+    
+    int _score;
 }
 
 -(id)init {
@@ -24,6 +27,7 @@
         self.userInteractionEnabled = TRUE;
         
         _isTouching = FALSE;
+        _score      = 0;
         
     }
     return self;
@@ -74,13 +78,21 @@
 
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair player:(MyCharacter*)player coin:(BricheyCoin*)coin {
     CCLOG(@"Hit a coin");
+    
+    [[_physicsNode space] addPostStepBlock:^{
+        if ([self.children containsObject:coin]) {
+            [self removeChild:coin];
+            _score++;
+        }
+    } key:coin];
+    
     return NO;
 }
 
 -(void)endMinigame {
     // Be sure you call this method when you end your minigame!
     // Of course you won't have a random score, but your score *must* be between 1 and 100 inclusive
-    [self endMinigameWithScore:arc4random()%100 + 1];
+    [self endMinigameWithScore:_score];
 }
 
 // DO NOT DELETE!
