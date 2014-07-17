@@ -14,6 +14,8 @@
     CGPoint _initialTouch;
     CGPoint _currentTouch;
     
+    CCLabelTTF *_scoreDisplay;
+    
     BricheyCoin *_coin;
     CCPhysicsNode *_physicsNode;
     
@@ -74,16 +76,24 @@
     // Called each update cycle
     // n.b. Lag and other factors may cause it to be called more or less frequently on different devices or sessions
     // delta will tell you how much time has passed since the last cycle (in seconds)
+    
+    CGFloat screenBottom = [[UIScreen mainScreen] bounds].size.height;
+    if (self.hero.position.y <= 0) {
+        [self endMinigame];
+    }
 }
 
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair player:(MyCharacter*)player coin:(BricheyCoin*)coin {
     CCLOG(@"Hit a coin");
     
     [[_physicsNode space] addPostStepBlock:^{
-        if ([self.children containsObject:coin]) {
-            [self removeChild:coin];
-            _score++;
-        }
+        _score++;
+        [coin moveToNewLocation];
+        _scoreDisplay.string = [NSString stringWithFormat:@"Score: %d", _score];
+//        if ([self.children containsObject:coin]) {
+//            // [coin removeFromParent];
+//
+//        }
     } key:coin];
     
     return NO;

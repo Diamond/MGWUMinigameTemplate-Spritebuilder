@@ -10,4 +10,11 @@
 
 @implementation BricheyCoin
 
+-(void)moveToNewLocation
+{
+    CGFloat x = arc4random() % 568;
+    CGFloat y = arc4random() % 160;
+    self.position = CGPointMake(x, y);
+}
+
 @end

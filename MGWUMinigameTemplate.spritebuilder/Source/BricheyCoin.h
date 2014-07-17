@@ -10,4 +10,6 @@
 
 @interface BricheyCoin : CCSprite
 
+-(void)moveToNewLocation;
+
 @end
