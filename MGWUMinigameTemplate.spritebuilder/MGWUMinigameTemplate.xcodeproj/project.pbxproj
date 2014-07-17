@@ -36,6 +36,7 @@
 		B77F1B4017B978D7009739AE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B77F1B3F17B978D7009739AE /* CoreGraphics.framework */; };
 		B77F1B4217B978D7009739AE /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B77F1B4117B978D7009739AE /* CoreText.framework */; };
 		CA6BEC1A19760793004AF9FE /* BricheyCoin.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6BEC1919760793004AF9FE /* BricheyCoin.m */; };
+		CA6BEC1D19776564004AF9FE /* BricheyPlatform.m in Sources */ = {isa = PBXBuildFile; fileRef = CA6BEC1C19776564004AF9FE /* BricheyPlatform.m */; };
 		ED03BBE31942563A00E23822 /* MGWUMinigame.m in Sources */ = {isa = PBXBuildFile; fileRef = ED03BBE01942563A00E23822 /* MGWUMinigame.m */; };
 		ED03BBE41942563A00E23822 /* MGWUTestGame.m in Sources */ = {isa = PBXBuildFile; fileRef = ED03BBE21942563A00E23822 /* MGWUTestGame.m */; };
 		ED03BBE71942587100E23822 /* MyMinigame.m in Sources */ = {isa = PBXBuildFile; fileRef = ED03BBE61942587100E23822 /* MyMinigame.m */; };
@@ -97,6 +98,8 @@
 		B7B3713D180358F1007369CC /* libObjectiveChipmunk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libObjectiveChipmunk.a; path = "../libs/cocos2d-iphone/external/Chipmunk/xcode/build/Debug-iphoneos/libObjectiveChipmunk.a"; sourceTree = "<group>"; };
 		CA6BEC1819760793004AF9FE /* BricheyCoin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BricheyCoin.h; path = Source/BricheyCoin.h; sourceTree = "<group>"; };
 		CA6BEC1919760793004AF9FE /* BricheyCoin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BricheyCoin.m; path = Source/BricheyCoin.m; sourceTree = "<group>"; };
+		CA6BEC1B19776564004AF9FE /* BricheyPlatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BricheyPlatform.h; path = Source/BricheyPlatform.h; sourceTree = "<group>"; };
+		CA6BEC1C19776564004AF9FE /* BricheyPlatform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BricheyPlatform.m; path = Source/BricheyPlatform.m; sourceTree = "<group>"; };
 		ED03BBDF1942563A00E23822 /* MGWUMinigame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MGWUMinigame.h; path = Source/MGWUMinigame.h; sourceTree = "<group>"; };
 		ED03BBE01942563A00E23822 /* MGWUMinigame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MGWUMinigame.m; path = Source/MGWUMinigame.m; sourceTree = "<group>"; };
 		ED03BBE11942563A00E23822 /* MGWUTestGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MGWUTestGame.h; path = Source/MGWUTestGame.h; sourceTree = "<group>"; };
@@ -150,6 +153,8 @@
 				ED03BBE61942587100E23822 /* MyMinigame.m */,
 				CA6BEC1819760793004AF9FE /* BricheyCoin.h */,
 				CA6BEC1919760793004AF9FE /* BricheyCoin.m */,
+				CA6BEC1B19776564004AF9FE /* BricheyPlatform.h */,
+				CA6BEC1C19776564004AF9FE /* BricheyPlatform.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -288,7 +293,7 @@
 				ORGANIZATIONNAME = Apportable;
 				TargetAttributes = {
 					B77F1B2D17B978D7009739AE = {
-						DevelopmentTeam = SBVP8ED765;
+						DevelopmentTeam = YA3VDCU9ZZ;
 						SystemCapabilities = {
 							com.apple.GameCenter = {
 								enabled = 0;
@@ -369,6 +374,7 @@
 				ED03BBE41942563A00E23822 /* MGWUTestGame.m in Sources */,
 				B73789871807631A0076A88C /* main.m in Sources */,
 				ED5FF05C19495F2F00571E13 /* MyCharacter.m in Sources */,
+				CA6BEC1D19776564004AF9FE /* BricheyPlatform.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
