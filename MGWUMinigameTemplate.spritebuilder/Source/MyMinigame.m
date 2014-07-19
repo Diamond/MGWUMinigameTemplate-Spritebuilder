@@ -8,16 +8,23 @@
 #import "MyMinigame.h"
 #import "BricheyCoin.h"
 #import "CCPhysics+ObjectiveChipmunk.h"
+#import "BricheyPlatform.h"
+
+static const int STARTING_PLATFORMS = 10;
 
 @implementation MyMinigame {
     BOOL _isTouching;
     CGPoint _initialTouch;
     CGPoint _currentTouch;
     
-    CCLabelTTF *_scoreDisplay;
-    
-    BricheyCoin *_coin;
+    CCLabelTTF    *_scoreDisplay;
     CCPhysicsNode *_physicsNode;
+    
+    NSMutableArray *_platforms;
+    CCNode         *_platformLayer;
+    
+    NSMutableArray *_coins;
+    CCNode         *_coinLayer;
     
     int _score;
 }
@@ -28,6 +35,9 @@
         self.instructions = @"These are the game instructions :D";
         self.userInteractionEnabled = TRUE;
         
+        _platforms = [NSMutableArray array];
+        _coins     = [NSMutableArray array];
+
         _isTouching = FALSE;
         _score      = 0;
         
@@ -40,8 +50,21 @@
     _physicsNode.collisionDelegate = self;
     
     self.hero.physicsBody.collisionType = @"player";
-    _coin.physicsBody.collisionType     = @"coin";
     
+    for (int i = 0; i < STARTING_PLATFORMS; i++) {
+        BricheyPlatform *newPlatform = [[BricheyPlatform alloc] initAtRandomPosition];
+        [_platforms     addObject:newPlatform];
+        [_platformLayer addChild:newPlatform];
+    }
+    
+    for (int i = 0; i < STARTING_PLATFORMS; i++) {
+        CGPoint platformLocation = ((BricheyPlatform*)_platforms[i]).position;
+        platformLocation.y += 50.0f;
+        BricheyCoin *newCoin = [[BricheyCoin alloc] initAtPositionX:platformLocation.x andY:platformLocation.y];
+        [_coins     addObject:newCoin];
+        [_coinLayer addChild:newCoin];
+    }
+
     // We're calling a public method of the character that tells it to jump!
     [self.hero jump];
 }
@@ -49,6 +72,7 @@
 -(void)onEnter {
     [super onEnter];
     // Create anything you'd like to draw here
+
 }
 
 -(void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event

@@ -10,4 +10,7 @@
 
 @interface BricheyPlatform : CCSprite
 
+-(void)moveToNewLocation;
+-(id)initAtRandomPosition;
+
 @end

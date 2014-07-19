@@ -11,5 +11,8 @@
 @interface BricheyCoin : CCSprite
 
 -(void)moveToNewLocation;
+-(id)initAtRandomPosition;
+-(id)initAtPositionX:(CGFloat)x andY:(CGFloat)y;
+-(id)init;
 
 @end
