@@ -7,7 +7,6 @@
 
 #import "MyMinigame.h"
 #import "BricheyCoin.h"
-#import "PhysicsCoin.h"
 #import "CCPhysics+ObjectiveChipmunk.h"
 #import "BricheyPlatform.h"
 
@@ -110,7 +109,7 @@ static const int STARTING_COINS     = 10;
     }
 }
 
--(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair player:(MyCharacter*)player coin:(PhysicsCoin*)coin {
+-(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair player:(MyCharacter*)player coin:(BricheyCoin*)coin {
     CCLOG(@"Hit a coin");
     
     [[_physicsNode space] addPostStepBlock:^{
