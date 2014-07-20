@@ -27,7 +27,11 @@ static const int STARTING_COINS     = 10;
     NSMutableArray *_coins;
     CCNode         *_coinLayer;
     
-    int _score;
+    CCNode         *_gameplayNode;
+    CCNode         *_uiNode;
+    CCNode         *_backgroundNode;
+    
+    int            _score;
 }
 
 -(id)init {
@@ -110,16 +114,13 @@ static const int STARTING_COINS     = 10;
 }
 
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair player:(MyCharacter*)player coin:(BricheyCoin*)coin {
-    CCLOG(@"Hit a coin");
-    
     [[_physicsNode space] addPostStepBlock:^{
         _score++;
-        [coin moveToNewLocation];
+        //[coin moveToNewLocation];
         _scoreDisplay.string = [NSString stringWithFormat:@"Score: %d", _score];
-//        if ([self.children containsObject:coin]) {
-//            // [coin removeFromParent];
-//
-//        }
+        if ([_coinLayer.children containsObject:coin]) {
+            [coin removeFromParent];
+        }
     } key:coin];
     
     return NO;
