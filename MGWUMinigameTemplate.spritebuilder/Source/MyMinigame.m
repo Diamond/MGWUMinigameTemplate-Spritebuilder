@@ -10,9 +10,6 @@
 #import "CCPhysics+ObjectiveChipmunk.h"
 #import "BricheyPlatform.h"
 
-static const int STARTING_PLATFORMS = 10;
-static const int STARTING_COINS     = 10;
-
 static const int PLATFORM_EVERY_Y   = 100;
 static const int PLATFORM_EVERY_X   = 200;
 
@@ -137,7 +134,6 @@ static const int PLATFORM_EVERY_X   = 200;
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair player:(MyCharacter*)player coin:(BricheyCoin*)coin {
     [[_physicsNode space] addPostStepBlock:^{
         _score++;
-        //[coin moveToNewLocation];
         _scoreDisplay.string = [NSString stringWithFormat:@"Score: %d", _score];
         if ([_coinLayer.children containsObject:coin]) {
             [coin removeFromParent];

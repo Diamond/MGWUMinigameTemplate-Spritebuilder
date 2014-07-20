@@ -88,6 +88,7 @@ static const CGFloat JUMP_HEIGHT = 150.0f;
     else if (_velYPrev < 0 && self.physicsBody.velocity.y >= 0 && _isFalling && !_isLanding) {
         [self resetBools];
         _isLanding = YES;
+        self.rotation = 0.0f;
         [self.animationManager runAnimationsForSequenceNamed:@"AnimIsoLand"];
     }
     
@@ -114,12 +115,22 @@ static const CGFloat JUMP_HEIGHT = 150.0f;
     CGFloat xvel = -(X_SPEED);
     CGFloat yvel = self.physicsBody.velocity.y;
     
+    if (_isJumping) {
+        CCActionRotateBy *rotate = [CCActionRotateBy actionWithDuration:0.5f angle:-15.0f];
+        [self runAction:rotate];
+    }
+    
     self.physicsBody.velocity = ccp(xvel, yvel);
 }
 
 -(void)moveRight {
     CGFloat xvel = +(X_SPEED);
     CGFloat yvel = self.physicsBody.velocity.y;
+    
+    if (_isJumping) {
+        CCActionRotateBy *rotate = [CCActionRotateBy actionWithDuration:0.5f angle:+15.0f];
+        [self runAction:rotate];
+    }
     
     self.physicsBody.velocity = ccp(xvel, yvel);
 }
