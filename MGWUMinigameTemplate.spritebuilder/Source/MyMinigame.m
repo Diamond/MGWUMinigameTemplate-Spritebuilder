@@ -13,6 +13,9 @@
 static const int STARTING_PLATFORMS = 10;
 static const int STARTING_COINS     = 10;
 
+static const int PLATFORM_EVERY_Y   = 100;
+static const int PLATFORM_EVERY_X   = 200;
+
 @implementation MyMinigame {
     BOOL _isTouching;
     CGPoint _initialTouch;
@@ -56,24 +59,42 @@ static const int STARTING_COINS     = 10;
 
     self.hero.physicsBody.collisionType = @"player";
     
-    for (int i = 0; i < STARTING_PLATFORMS; i++) {
-        BricheyPlatform *newPlatform = (BricheyPlatform*)[CCBReader load:@"BricheyPlatform"];
-        [newPlatform setupAtRandomPoint];
-        [_platforms     addObject:newPlatform];
-        [_platformLayer addChild:newPlatform];
+    CGSize platformLayerSize = _platformLayer.contentSize;
+    for (CGFloat y = PLATFORM_EVERY_Y; y <= platformLayerSize.height; y += PLATFORM_EVERY_Y) {
+        for (CGFloat x  = 0.0f; x <= platformLayerSize.width; x += PLATFORM_EVERY_X) {
+            CGPoint bottomLeft = CGPointMake(x, y);
+            CGFloat xPos       = bottomLeft.x + (arc4random() % PLATFORM_EVERY_X);
+            //CGFloat yPos       = bottomLeft.y + (arc4random() % PLATFORM_EVERY_Y);
+            CGFloat yPos = y;
+            [self addPlatformAtX:xPos andY:yPos];
+        }
     }
     
-    for (int i = 0; i < STARTING_COINS; i++) {
-        CGPoint platformLocation = ((BricheyPlatform*)_platforms[i]).position;
+    
+    [self addCoins];
+
+    // We're calling a public method of the character that tells it to jump!
+    [self.hero jump];
+}
+
+-(void)addPlatformAtX:(CGFloat)x andY:(CGFloat)y
+{
+    BricheyPlatform *newPlatform = (BricheyPlatform*)[CCBReader load:@"BricheyPlatform"];
+    [newPlatform setupAtX:x andY:y];
+    [_platforms     addObject:newPlatform];
+    [_platformLayer addChild:newPlatform];
+}
+
+-(void)addCoins
+{
+    for (BricheyPlatform *platform in _platforms) {
+        CGPoint platformLocation = platform.position;
         platformLocation.y += 50.0f;
         BricheyCoin *newCoin = (BricheyCoin*)[CCBReader load:@"BricheyCoin"];
         [newCoin setupAtX:platformLocation.x andY:platformLocation.y];
         [_coins       addObject:newCoin];
         [_coinLayer   addChild:newCoin];
     }
-
-    // We're calling a public method of the character that tells it to jump!
-    [self.hero jump];
 }
 
 -(void)onEnter {

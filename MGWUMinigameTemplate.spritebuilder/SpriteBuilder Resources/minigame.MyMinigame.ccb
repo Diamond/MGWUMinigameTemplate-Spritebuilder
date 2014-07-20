@@ -772,10 +772,10 @@
 										<string>Size</string>
 										<key>value</key>
 										<array>
-											<real>1</real>
-											<real>5.5</real>
-											<integer>2</integer>
-											<integer>2</integer>
+											<real>568</real>
+											<real>1760</real>
+											<integer>0</integer>
+											<integer>0</integer>
 										</array>
 									</dict>
 									<dict>
@@ -803,6 +803,8 @@
 										</array>
 									</dict>
 								</array>
+								<key>selected</key>
+								<true/>
 							</dict>
 							<dict>
 								<key>UUID</key>

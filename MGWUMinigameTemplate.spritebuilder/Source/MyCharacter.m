@@ -15,7 +15,8 @@
     BOOL _isLanding;
 }
 
-static const CGFloat X_SPEED = 30.0f;
+static const CGFloat X_SPEED     = 30.0f;
+static const CGFloat JUMP_HEIGHT = 150.0f;
 
 -(id)init {
     if ((self = [super init])) {
@@ -49,12 +50,10 @@ static const CGFloat X_SPEED = 30.0f;
     [self updateAnimations:delta];
     
     if (_isIdling) {
+        [self resetBools];
+        _isJumping = YES;
+        [self.animationManager runAnimationsForSequenceNamed:@"AnimIsoJump"];
         [self jump];
-        if (self.rotation < -15) {
-            self.rotation = -15;
-        } else if (self.rotation > 15) {
-            self.rotation = 15;
-        }
     }
 }
 
@@ -65,7 +64,6 @@ static const CGFloat X_SPEED = 30.0f;
     if (_velYPrev == 0 && self.physicsBody.velocity.y == 0 && !_isIdling && !_isFalling) {
         [self resetBools];
         _isIdling = YES;
-        self.rotation = 0.0f;
         [self.animationManager runAnimationsForSequenceNamed:@"AnimIsoIdling"];
     }
     // JUMP
@@ -90,7 +88,6 @@ static const CGFloat X_SPEED = 30.0f;
     else if (_velYPrev < 0 && self.physicsBody.velocity.y >= 0 && _isFalling && !_isLanding) {
         [self resetBools];
         _isLanding = YES;
-        self.rotation = 0.0f;
         [self.animationManager runAnimationsForSequenceNamed:@"AnimIsoLand"];
     }
     
@@ -110,7 +107,7 @@ static const CGFloat X_SPEED = 30.0f;
 // This method tells the character to jump by giving it an upward velocity.
 // It's been added to a physics node in the main scene, like the penguins Peeved Penguins, so it will fall automatically!
 -(void)jump {
-    self.physicsBody.velocity = ccp(0,122);
+    self.physicsBody.velocity = ccp(0, JUMP_HEIGHT);
 }
 
 -(void)moveLeft {
