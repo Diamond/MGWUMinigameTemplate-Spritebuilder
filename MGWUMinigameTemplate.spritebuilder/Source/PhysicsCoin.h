@@ -8,9 +8,11 @@
 
 #import "CCSprite.h"
 
-@interface BricheyCoin : CCSprite
+@interface PhysicsCoin : CCNode
 
 -(void)moveToNewLocation;
--(void)setupAtX:(CGFloat)x andY:(CGFloat)y;
+-(id)initAtRandomPosition;
+-(id)initAtPositionX:(CGFloat)x andY:(CGFloat)y;
+-(id)init;
 
 @end

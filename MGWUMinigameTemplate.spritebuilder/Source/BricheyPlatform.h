@@ -11,6 +11,7 @@
 @interface BricheyPlatform : CCSprite
 
 -(void)moveToNewLocation;
--(id)initAtRandomPosition;
+-(void)setupAtX:(CGFloat)x andY:(CGFloat)y;
+-(void)setupAtRandomPoint;
 
 @end

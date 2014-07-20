@@ -17,33 +17,23 @@
     self.position = CGPointMake(x, y);
 }
 
--(id)initAtPositionX:(CGFloat)x andY:(CGFloat)y
+-(void)setupAtX:(CGFloat)x andY:(CGFloat)y
 {
-    self = [self init];
-    if (self) {
-        self.position = CGPointMake(x, y);
-    }
-    return self;
+    [self setup];
+    self.position = CGPointMake(x, y);
 }
 
--(id)initAtRandomPosition
+-(void)setupAtRandomPoint
 {
-    self = [self init];
-    if (self) {
-        [self moveToNewLocation];
-    }
-    return self;
+    [self setup];
+    [self moveToNewLocation];
 }
 
--(id)init
+-(void)setup
 {
-    self = [super initWithImageNamed:@"environment/box_metal_2.png"];
-    if (self) {
-        self.physicsBody.collisionType = @"platform";
-        self.contentSize = CGSizeMake(217.0f, 67.0f);
-        self.scale = 0.25f;
-    }
-    return self;
+    self.physicsBody.collisionType = @"platform";
+    self.contentSize = CGSizeMake(217.0f, 67.0f);
+    self.scale = 0.25f;
 }
 
 @end

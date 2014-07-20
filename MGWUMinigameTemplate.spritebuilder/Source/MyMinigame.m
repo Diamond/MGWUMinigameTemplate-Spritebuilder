@@ -7,10 +7,12 @@
 
 #import "MyMinigame.h"
 #import "BricheyCoin.h"
+#import "PhysicsCoin.h"
 #import "CCPhysics+ObjectiveChipmunk.h"
 #import "BricheyPlatform.h"
 
 static const int STARTING_PLATFORMS = 10;
+static const int STARTING_COINS     = 10;
 
 @implementation MyMinigame {
     BOOL _isTouching;
@@ -48,21 +50,23 @@ static const int STARTING_PLATFORMS = 10;
 -(void)didLoadFromCCB {
     // Set up anything connected to Sprite Builder here
     _physicsNode.collisionDelegate = self;
-    
+
     self.hero.physicsBody.collisionType = @"player";
     
     for (int i = 0; i < STARTING_PLATFORMS; i++) {
-        BricheyPlatform *newPlatform = [[BricheyPlatform alloc] initAtRandomPosition];
+        BricheyPlatform *newPlatform = (BricheyPlatform*)[CCBReader load:@"BricheyPlatform"];
+        [newPlatform setupAtRandomPoint];
         [_platforms     addObject:newPlatform];
         [_platformLayer addChild:newPlatform];
     }
     
-    for (int i = 0; i < STARTING_PLATFORMS; i++) {
+    for (int i = 0; i < STARTING_COINS; i++) {
         CGPoint platformLocation = ((BricheyPlatform*)_platforms[i]).position;
         platformLocation.y += 50.0f;
-        BricheyCoin *newCoin = [[BricheyCoin alloc] initAtPositionX:platformLocation.x andY:platformLocation.y];
-        [_coins     addObject:newCoin];
-        [_coinLayer addChild:newCoin];
+        BricheyCoin *newCoin = (BricheyCoin*)[CCBReader load:@"BricheyCoin"];
+        [newCoin setupAtX:platformLocation.x andY:platformLocation.y];
+        [_coins       addObject:newCoin];
+        [_coinLayer   addChild:newCoin];
     }
 
     // We're calling a public method of the character that tells it to jump!
@@ -106,7 +110,7 @@ static const int STARTING_PLATFORMS = 10;
     }
 }
 
--(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair player:(MyCharacter*)player coin:(BricheyCoin*)coin {
+-(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair player:(MyCharacter*)player coin:(PhysicsCoin*)coin {
     CCLOG(@"Hit a coin");
     
     [[_physicsNode space] addPostStepBlock:^{

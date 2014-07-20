@@ -17,33 +17,13 @@
     self.position = CGPointMake(x, y);
 }
 
--(id)initAtPositionX:(CGFloat)x andY:(CGFloat)y
-{
-    self = [self init];
-    if (self) {
-        self.position = CGPointMake(x, y);
-    }
-    return self;
-}
 
--(id)initAtRandomPosition
+-(void)setupAtX:(CGFloat)x andY:(CGFloat)y
 {
-    self = [self init];
-    if (self) {
-        [self moveToNewLocation];
-    }
-    return self;
-}
-
--(id)init
-{
-    self = [super initWithImageNamed:@"items/star-coin-2.png"];
-    if (self) {
-        self.physicsBody.collisionType = @"coin";
-        self.contentSize = CGSizeMake(59.0f, 59.0f);
-        self.scale = 0.25f;
-    }
-    return self;
+    self.physicsBody.collisionType = @"coin";
+    self.contentSize = CGSizeMake(59.0f, 59.0f);
+    self.scale = 0.25f;
+    self.position = CGPointMake(x, y);
 }
 
 @end
