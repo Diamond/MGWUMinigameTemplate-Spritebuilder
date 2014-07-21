@@ -31,6 +31,8 @@ static const int PLATFORM_EVERY_X   = 200;
     CCNode         *_uiNode;
     CCNode         *_backgroundNode;
     
+    CCSprite       *_gameOverStar;
+    
     int            _score;
 }
 
@@ -55,23 +57,26 @@ static const int PLATFORM_EVERY_X   = 200;
     _physicsNode.collisionDelegate = self;
 
     self.hero.physicsBody.collisionType = @"player";
-    
+    _gameOverStar.physicsBody.collisionType = @"star";
+
+    [self addPlatforms];
+    [self addCoins];
+
+    // We're calling a public method of the character that tells it to jump!
+    [self.hero jump];
+}
+
+-(void)addPlatforms
+{
     CGSize platformLayerSize = _platformLayer.contentSize;
     for (CGFloat y = PLATFORM_EVERY_Y; y <= platformLayerSize.height; y += PLATFORM_EVERY_Y) {
         for (CGFloat x  = 0.0f; x <= platformLayerSize.width; x += PLATFORM_EVERY_X) {
             CGPoint bottomLeft = CGPointMake(x, y);
             CGFloat xPos       = bottomLeft.x + (arc4random() % PLATFORM_EVERY_X);
-            //CGFloat yPos       = bottomLeft.y + (arc4random() % PLATFORM_EVERY_Y);
-            CGFloat yPos = y;
+            CGFloat yPos       = y;
             [self addPlatformAtX:xPos andY:yPos];
         }
     }
-    
-    
-    [self addCoins];
-
-    // We're calling a public method of the character that tells it to jump!
-    [self.hero jump];
 }
 
 -(void)addPlatformAtX:(CGFloat)x andY:(CGFloat)y
@@ -129,6 +134,16 @@ static const int PLATFORM_EVERY_X   = 200;
     if (self.hero.position.y <= 0) {
         [self endMinigame];
     }
+    
+    self.hero.positionType = CCPositionTypePoints;
+    if (self.hero.position.y >= 150) {
+        CGFloat distanceFromMid = 150 - self.hero.position.y;
+        //CCActionMoveBy *moveBy = [CCActionMoveBy actionWithDuration:0.2f position:ccp(0.0f, distanceFromMid)];
+        //[_gameplayNode runAction:moveBy];
+        //_platformLayer.position = CGPointMake(0.0f, distanceFromMid);
+        //_coinLayer.position     = CGPointMake(0.0f, distanceFromMid);
+        _gameplayNode.position = CGPointMake(0.0f, distanceFromMid);
+    }
 }
 
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair player:(MyCharacter*)player coin:(BricheyCoin*)coin {
@@ -139,6 +154,17 @@ static const int PLATFORM_EVERY_X   = 200;
             [coin removeFromParent];
         }
     } key:coin];
+    
+    return NO;
+}
+
+-(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair player:(MyCharacter*)player star:(CCSprite*)star {
+    [[_physicsNode space] addPostStepBlock:^{
+        if ([_coinLayer.children containsObject:star]) {
+            [star removeFromParent];
+            [self endMinigame];
+        }
+    } key:star];
     
     return NO;
 }

@@ -17,6 +17,7 @@
 
 static const CGFloat X_SPEED     = 30.0f;
 static const CGFloat JUMP_HEIGHT = 150.0f;
+static const bool    DO_ROTATE = FALSE;
 
 -(id)init {
     if ((self = [super init])) {
@@ -91,7 +92,7 @@ static const CGFloat JUMP_HEIGHT = 150.0f;
         self.rotation = 0.0f;
         [self.animationManager runAnimationsForSequenceNamed:@"AnimIsoLand"];
     }
-    
+
     // We track the previous velocity, since it's important to determining how the character is and was moving for animations
     _velYPrev = self.physicsBody.velocity.y;
     
@@ -115,8 +116,8 @@ static const CGFloat JUMP_HEIGHT = 150.0f;
     CGFloat xvel = -(X_SPEED);
     CGFloat yvel = self.physicsBody.velocity.y;
     
-    if (_isJumping) {
-        CCActionRotateBy *rotate = [CCActionRotateBy actionWithDuration:0.5f angle:-15.0f];
+    if (_isJumping && DO_ROTATE) {
+        CCActionRotateBy *rotate = [CCActionRotateBy actionWithDuration:0.5f angle:-10.0f];
         [self runAction:rotate];
     }
     
@@ -127,8 +128,8 @@ static const CGFloat JUMP_HEIGHT = 150.0f;
     CGFloat xvel = +(X_SPEED);
     CGFloat yvel = self.physicsBody.velocity.y;
     
-    if (_isJumping) {
-        CCActionRotateBy *rotate = [CCActionRotateBy actionWithDuration:0.5f angle:+15.0f];
+    if (_isJumping && DO_ROTATE) {
+        CCActionRotateBy *rotate = [CCActionRotateBy actionWithDuration:0.5f angle:+10.0f];
         [self runAction:rotate];
     }
     
