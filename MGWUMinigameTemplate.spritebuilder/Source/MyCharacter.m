@@ -9,15 +9,19 @@
 
 @implementation MyCharacter {
     float _velYPrev; // this tracks the previous velocity, it's used for animation
+    float _velXPrev;
     BOOL _isIdling; // these BOOLs track what animations have been triggered.  By default, they're set to NO
     BOOL _isJumping;
     BOOL _isFalling;
     BOOL _isLanding;
+    BOOL _isWalkingLeft;
+    BOOL _isWalkingRight;
 }
 
-static const CGFloat X_SPEED     = 30.0f;
+static const CGFloat X_SPEED     = 75.0f;
 static const CGFloat JUMP_HEIGHT = 150.0f;
-static const bool    DO_ROTATE = FALSE;
+static const CGFloat SLOWDOWN    = 1.0f;
+static const bool    DO_ROTATE   = FALSE;
 
 -(id)init {
     if ((self = [super init])) {
@@ -25,9 +29,12 @@ static const bool    DO_ROTATE = FALSE;
         
         // We initialize _isIdling to be YES, because we want the character to start idling
         // (Our animation code relies on this)
-        _isIdling      = YES;
-        self.isIdle    = YES;
-        self.isJumping = NO;
+        _isIdling       = YES;
+        self.isIdle     = YES;
+        self.isJumping  = NO;
+        self.isFalling  = NO;
+        _isWalkingLeft  = NO;
+        _isWalkingRight = NO;
         // by default, a BOOL's value is NO, so the other BOOLs are NO right now
     }
     return self;
@@ -50,11 +57,10 @@ static const bool    DO_ROTATE = FALSE;
     // This sample method is called every update to handle character animation
     [self updateAnimations:delta];
     
-    if (_isIdling) {
-        [self resetBools];
-        _isJumping = YES;
-        [self.animationManager runAnimationsForSequenceNamed:@"AnimIsoJump"];
-        [self jump];
+    if (self.physicsBody.velocity.x > 0) {
+        self.physicsBody.velocity = ccp(self.physicsBody.velocity.x - SLOWDOWN, self.physicsBody.velocity.y);
+    } else if (self.physicsBody.velocity.x < 0) {
+        self.physicsBody.velocity = ccp(self.physicsBody.velocity.x + SLOWDOWN, self.physicsBody.velocity.y);
     }
 }
 
@@ -95,31 +101,32 @@ static const bool    DO_ROTATE = FALSE;
 
     // We track the previous velocity, since it's important to determining how the character is and was moving for animations
     _velYPrev = self.physicsBody.velocity.y;
+    _velXPrev = self.physicsBody.velocity.x;
     
 }
 
 // This method is called before setting one to YES, so that only one is ever YES at a time
 -(void)resetBools {
-    _isIdling = NO;
-    _isJumping = NO;
-    _isFalling = NO;
-    _isLanding = NO;
+    _isIdling       = NO;
+    _isJumping      = NO;
+    _isFalling      = NO;
+    _isLanding      = NO;
 }
 
 // This method tells the character to jump by giving it an upward velocity.
 // It's been added to a physics node in the main scene, like the penguins Peeved Penguins, so it will fall automatically!
 -(void)jump {
-    self.physicsBody.velocity = ccp(0, JUMP_HEIGHT);
+    CGFloat xvel = self.physicsBody.velocity.x;
+    if (self.physicsBody.velocity.y == 0.0f) {
+        self.physicsBody.velocity = ccp(xvel, JUMP_HEIGHT);
+    }
 }
 
 -(void)moveLeft {
     CGFloat xvel = -(X_SPEED);
     CGFloat yvel = self.physicsBody.velocity.y;
     
-    if (_isJumping && DO_ROTATE) {
-        CCActionRotateBy *rotate = [CCActionRotateBy actionWithDuration:0.5f angle:-10.0f];
-        [self runAction:rotate];
-    }
+    _isWalkingLeft = YES;
     
     self.physicsBody.velocity = ccp(xvel, yvel);
 }
@@ -128,12 +135,18 @@ static const bool    DO_ROTATE = FALSE;
     CGFloat xvel = +(X_SPEED);
     CGFloat yvel = self.physicsBody.velocity.y;
     
-    if (_isJumping && DO_ROTATE) {
-        CCActionRotateBy *rotate = [CCActionRotateBy actionWithDuration:0.5f angle:+10.0f];
-        [self runAction:rotate];
-    }
+    _isWalkingRight = YES;
     
     self.physicsBody.velocity = ccp(xvel, yvel);
+}
+
+-(void)stopMoving
+{
+    CGFloat yvel = self.physicsBody.velocity.y;
+    self.physicsBody.velocity = ccp(0.0f, yvel);
+    _isWalkingLeft  = NO;
+    _isWalkingRight = NO;
+    _isIdling       = YES;
 }
 
 @end

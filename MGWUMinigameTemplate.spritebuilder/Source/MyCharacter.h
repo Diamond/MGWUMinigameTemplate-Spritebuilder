@@ -11,9 +11,11 @@
 
 @property (nonatomic,assign) BOOL isJumping;
 @property (nonatomic,assign) BOOL isIdle;
+@property (nonatomic,assign) BOOL isFalling;
 
 -(void)jump;
 -(void)moveLeft;
 -(void)moveRight;
+-(void)stopMoving;
 
 @end

@@ -56,14 +56,41 @@ static const int PLATFORM_EVERY_X   = 200;
     // Set up anything connected to Sprite Builder here
     _physicsNode.collisionDelegate = self;
 
-    self.hero.physicsBody.collisionType = @"player";
+    self.hero.physicsBody.collisionType     = @"player";
     _gameOverStar.physicsBody.collisionType = @"star";
 
     [self addPlatforms];
     [self addCoins];
 
     // We're calling a public method of the character that tells it to jump!
+    //[self.hero jump];
+    
+    UISwipeGestureRecognizer * swipeUp = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swipeUp)];
+    swipeUp.direction = UISwipeGestureRecognizerDirectionUp;
+    [[[CCDirector sharedDirector] view] addGestureRecognizer:swipeUp];
+    
+    UISwipeGestureRecognizer * swipeLeft = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swipeLeft)];
+    swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
+    [[[CCDirector sharedDirector] view] addGestureRecognizer:swipeLeft];
+    
+    UISwipeGestureRecognizer * swipeRight = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swipeRight)];
+    swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
+    [[[CCDirector sharedDirector] view] addGestureRecognizer:swipeRight];
+}
+
+-(void)swipeUp
+{
     [self.hero jump];
+}
+
+-(void)swipeLeft
+{
+    [self.hero moveLeft];
+}
+
+-(void)swipeRight
+{
+    [self.hero moveRight];
 }
 
 -(void)addPlatforms
@@ -114,10 +141,12 @@ static const int PLATFORM_EVERY_X   = 200;
 -(void)touchEnded:(UITouch *)touch withEvent:(UIEvent *)event
 {
     _isTouching = NO;
+    [self.hero stopMoving];
 }
 
 -(void)touchMoved:(UITouch *)touch withEvent:(UIEvent *)event
 {
+    return;
     _currentTouch = touch.locationInWorld;
     if (_currentTouch.x < _initialTouch.x) {
         [self.hero moveLeft];
@@ -138,10 +167,6 @@ static const int PLATFORM_EVERY_X   = 200;
     self.hero.positionType = CCPositionTypePoints;
     if (self.hero.position.y >= 150) {
         CGFloat distanceFromMid = 150 - self.hero.position.y;
-        //CCActionMoveBy *moveBy = [CCActionMoveBy actionWithDuration:0.2f position:ccp(0.0f, distanceFromMid)];
-        //[_gameplayNode runAction:moveBy];
-        //_platformLayer.position = CGPointMake(0.0f, distanceFromMid);
-        //_coinLayer.position     = CGPointMake(0.0f, distanceFromMid);
         _gameplayNode.position = CGPointMake(0.0f, distanceFromMid);
     }
 }
