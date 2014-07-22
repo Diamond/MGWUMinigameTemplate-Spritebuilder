@@ -39,7 +39,7 @@ static const int PLATFORM_EVERY_X   = 200;
 -(id)init {
     if ((self = [super init])) {
         // Initialize any arrays, dictionaries, etc in here
-        self.instructions = @"These are the game instructions :D";
+        self.instructions = @"Swipe left or right to move left or right, and swipe up to jump! Collect all of the coins on your way to the star!";
         self.userInteractionEnabled = TRUE;
         
         _platforms = [NSMutableArray array];

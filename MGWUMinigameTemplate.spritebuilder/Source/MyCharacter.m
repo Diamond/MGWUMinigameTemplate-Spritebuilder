@@ -103,6 +103,13 @@ static const bool    DO_ROTATE   = FALSE;
     _velYPrev = self.physicsBody.velocity.y;
     _velXPrev = self.physicsBody.velocity.x;
     
+    if (self.physicsBody.velocity.y > -1 && self.physicsBody.velocity.y < 1) {
+        self.physicsBody.velocity = ccp(self.physicsBody.velocity.x, 0);
+        if (!_isLanding) {
+            [self resetBools];
+            _isIdling = YES;
+        }
+    }
 }
 
 // This method is called before setting one to YES, so that only one is ever YES at a time
