@@ -59,8 +59,8 @@ static const int PLATFORM_EVERY_X   = 200;
     self.hero.physicsBody.collisionType     = @"player";
     _gameOverStar.physicsBody.collisionType = @"star";
 
-    [self addPlatforms];
-    [self addCoins];
+    /*[self addPlatforms];
+    [self addCoins];*/
 
     // We're calling a public method of the character that tells it to jump!
     //[self.hero jump];
