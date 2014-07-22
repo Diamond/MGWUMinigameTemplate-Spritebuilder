@@ -42,8 +42,8 @@ static const int PLATFORM_EVERY_X   = 200;
         self.instructions = @"Swipe left or right to move left or right, and swipe up to jump! Collect all of the coins on your way to the star!";
         self.userInteractionEnabled = TRUE;
         
-        _platforms = [NSMutableArray array];
-        _coins     = [NSMutableArray array];
+        _platforms = [[NSMutableArray alloc] init];
+        _coins     = [[NSMutableArray alloc] init];
 
         _isTouching = FALSE;
         _score      = 0;
@@ -59,11 +59,8 @@ static const int PLATFORM_EVERY_X   = 200;
     self.hero.physicsBody.collisionType     = @"player";
     _gameOverStar.physicsBody.collisionType = @"star";
 
-    /*[self addPlatforms];
-    [self addCoins];*/
-
-    // We're calling a public method of the character that tells it to jump!
-    //[self.hero jump];
+    [self addPlatforms];
+    [self addCoins];
     
     UISwipeGestureRecognizer * swipeUp = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swipeUp)];
     swipeUp.direction = UISwipeGestureRecognizerDirectionUp;
