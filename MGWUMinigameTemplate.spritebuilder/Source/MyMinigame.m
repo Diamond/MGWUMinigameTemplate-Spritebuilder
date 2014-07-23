@@ -32,6 +32,8 @@ static const int PLATFORM_EVERY_X   = 200;
     CCNode         *_backgroundNode;
     
     CCSprite       *_gameOverStar;
+    BOOL           _displayingGameOver;
+    CCLabelTTF     *_endGameDisplay;
     
     int            _score;
 }
@@ -41,9 +43,11 @@ static const int PLATFORM_EVERY_X   = 200;
         // Initialize any arrays, dictionaries, etc in here
         self.instructions = @"Swipe left or right to move left or right, and swipe up to jump! Collect all of the coins on your way to the star!";
         self.userInteractionEnabled = TRUE;
+        _endGameDisplay.visible = FALSE;
         
         _platforms = [[NSMutableArray alloc] init];
         _coins     = [[NSMutableArray alloc] init];
+        _displayingGameOver = FALSE;
 
         _isTouching = FALSE;
         _score      = 0;
@@ -73,6 +77,8 @@ static const int PLATFORM_EVERY_X   = 200;
     UISwipeGestureRecognizer * swipeRight = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swipeRight)];
     swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
     [[[CCDirector sharedDirector] view] addGestureRecognizer:swipeRight];
+    
+    _endGameDisplay.visible = FALSE;
 }
 
 -(void)swipeUp
@@ -133,6 +139,10 @@ static const int PLATFORM_EVERY_X   = 200;
 {
     _isTouching = YES;
     _initialTouch = touch.locationInWorld;
+    
+    if (_displayingGameOver) {
+        [self endMinigame];
+    }
 }
 
 -(void)touchEnded:(UITouch *)touch withEvent:(UIEvent *)event
@@ -184,11 +194,21 @@ static const int PLATFORM_EVERY_X   = 200;
     [[_physicsNode space] addPostStepBlock:^{
         if ([_coinLayer.children containsObject:star]) {
             [star removeFromParent];
-            [self endMinigame];
+            [self youWin];
         }
     } key:star];
-    
+
     return NO;
+}
+
+-(void)youWin
+{
+    _displayingGameOver = TRUE;
+    _score += 25;
+    _endGameDisplay.visible = TRUE;
+    _gameplayNode.visible = FALSE;
+    
+    _endGameDisplay.string = [NSString stringWithFormat:@"You win! Final score: %d", _score];
 }
 
 -(void)endMinigame {
